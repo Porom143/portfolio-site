@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contact Me</title>
+    <style>
+        /* বাটন স্টাইলিং */
+        .hire-button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .hire-button:hover {
+            background: #ff0000;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <!-- বাটন এলিমেন্ট -->
+    <button class="hire-button" onclick="sendEmail()">Hire Me</button>
+
+    <script>
+    function sendEmail() {
+        // আপনার ইমেইল ঠিকানা
+        const email = "porombiswasviki@gmail.com";
+        
+        // জিমেইল কম্পোজ লিঙ্ক জেনারেট করুন
+        const subject = "Job Opportunity";  // ডিফল্ট সাবজেক্ট
+        const body = "Hello, I would like to discuss...";  // ডিফল্ট মেসেজ
+        
+        window.location.href = https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)};
+    }
+    </script>
+</body>
+</html>

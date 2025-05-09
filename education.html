@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Education Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            padding: 50px 0;
+            border-bottom: 2px solid #ff0000;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #ff0000;
+            text-transform: uppercase;
+        }
+
+        h1 span {
+            color: #ffffff;
+        }
+
+        /* Navigation */
+        nav {
+            margin: 20px 0;
+            padding: 15px;
+            background: #1a1a1a;
+            border-radius: 5px;
+        }
+
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            margin: 0 15px;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #ff0000;
+        }
+
+        /* Section Styles */
+        .section {
+            margin: 40px 0;
+            padding: 30px;
+            background: #1a1a1a;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(255,0,0,0.2);
+        }
+
+        h2 {
+            color: #ff0000;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        /* Education Details */
+        .education-details {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .exam-card {
+            width: 48%;
+            background: #262626;
+            padding: 20px;
+            margin: 10px 0;
+            border-left: 4px solid #ff0000;
+           
+        
+        }
+        .hsc-img {
+    width: 100%;
+    max-width: 250px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    border: 2px solid red;
+}
+
+
+        /* Future Sections Placeholder */
+        .future-section {
+            background: #262626;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px dashed #ff0000;
+            text-align: center;
+            color: #888;
+        }
+
+        /* Footer */
+        footer {
+           
+            text-align: center;
+            padding: 30px;
+            background: #1a1a1a;
+            margin-top: 50px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><span>My</span> EDUCATION </h1>
+        </header>
+
+        <nav>
+            <a href="#about">About Me</a>
+            <a href="#education">Education</a>
+            <a href="#future">Future Projects</a>
+        </nav>
+
+        <!-- About Section -->
+        <section class="section" id="about">
+            <h2>About Me</h2>
+            <p>Hello! I’m Parash Biswas, a passionate and self-driven learner on a mission to build a strong foundation in web development and programming. Though I’ve stepped away from traditional academic studies, my love for technology and curiosity for coding have led me to carve a unique learning path of my own.
+
+                I’ve been actively working on enhancing my skills in HTML, CSS, and Python programming. These tools allow me to create beautiful and functional websites while also solving real-world problems through code. I believe in learning by doing, and I’m constantly building small projects to improve my understanding and creativity.
+                
+                Every day, I dedicate time to explore new things, practice consistently, and keep growing as a developer. Whether it's designing a clean contact page or writing efficient Python scripts, I love the process of learning and building.
+                
+                I may not have a formal degree in tech yet, but I have the dedication, curiosity, and work ethic to keep pushing forward and making a difference through code.</p>
+        </section>
+
+        <!-- Education Section -->
+        <section class="section" id="education">
+            <h2>Academic Qualifications</h2>
+            <div class="education-details">
+                <div class="exam-card">
+                    <h3>SSC</h3>
+                    <p>School:Debbhog high school</p>
+                    <p>Board:Jashore</p>
+                    <p>GPA:5.00</p>
+                    <!-- Add your marksheet image here -->
+                    <div style="background: #333; height: 200px; margin: 15px 0;" class="placeholder">
+                        <!-- Marksheet Image -->
+                    </div>
+                </div>
+
+                <div class="exam-card">
+                    <h3>HSC</h3>
+                    <p>College: Narail victoria college</p>
+                    <p>Board:Jashore</p>
+                    <p>GPA:5.00</p>
+                    <!-- Add your marksheet image here -->
+                    <div style="background: #333; height: 200px; margin: 15px 0;" class="placeholder">
+                       <div style="background: #333; height: auto; margin: 15px 0;" class="placeholder">
+    <img src="hsc.png" class="hsc-img" alt="HSC Marksheet">
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Future Sections -->
+        <section class="section" id="future">
+            <h2>Upcoming Skills</h2>
+            
+            <div class="future-section">
+                <h3>Ethical Hacking</h3>
+                <p>This section will be updated with cybersecurity content</p>
+            </div>
+
+            <div class="future-section">
+                <h3>Programming Skills</h3>
+                <p>This section will showcase programming projects and skills</p>
+            </div>
+        </section>
+
+        <footer>
+            <p>Contact:porombiswasviki@gmail.com</p>
+            <div style="margin-top: 15px;">
+                <a href="https://github.com/Porom143"target="_blank">Github</a>
+                <a href="https://www.linkedin.com/in/parash-biswas-905894287?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"target="_blank">Linkedin</a>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
