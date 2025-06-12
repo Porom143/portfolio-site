@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>আমার জেলার আবহাওয়া</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #000;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ff0000;
+            font-family: 'Roboto', sans-serif; /* Default body font */
+            overflow-x: hidden; /* Prevent horizontal scroll from animations */
+            position: relative; /* For absolute positioned background elements */
+        }
+
+        /* Animated Background Elements (Subtle) */
+        body::before, body::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 0, 0, 0.08); /* Lighter red glow */
+            filter: blur(80px);
+            z-index: -1;
+            animation: floatGlow 15s infinite ease-in-out alternate;
+        }
+
+        body::before {
+            width: 300px;
+            height: 300px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        body::after {
+            width: 250px;
+            height: 250px;
+            bottom: 15%;
+            right: 15%;
+            animation-delay: 7s;
+        }
+
+        @keyframes floatGlow {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.7; }
+            50% { transform: translate(20px, 30px) scale(1.05); opacity: 0.9; }
+            100% { transform: translate(0, 0) scale(1); opacity: 0.7; }
+        }
+
+        /* Container Styles */
+        .container {
+            width: 100%;
+            max-width: 600px; /* Slightly wider for more content */
+            background: rgba(10, 10, 10, 0.95); /* Darker background */
+            border-radius: 20px; /* More rounded corners */
+            padding: 30px 40px; /* More padding */
+            box-shadow: 0 0 40px rgba(255, 0, 0, 0.4); /* Stronger glow */
+            text-align: center;
+            border: 2px solid #ff0000; /* Thicker border */
+            animation: fadeIn 1s ease-out; /* Initial fade in for container */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Header Styles */
+        .header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #ff0000;
+        }
+        
+        .header h1 {
+            font-size: 2.8rem; /* Larger heading */
+            margin-bottom: 10px;
+            color: #ff0000;
+            text-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
+            font-family: 'Poppins', sans-serif; /* Poppins for headings */
+        }
+        
+        .location {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin-top: 10px;
+            font-size: 1.3rem; /* Slightly larger location text */
+            color: #ff5555;
+            font-weight: 500;
+        }
+        
+        /* Search Box Styles */
+        .search-box {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        
+        .search-box input {
+            border: 2px solid #ff0000;
+            outline: none;
+            padding: 16px 25px; /* More padding */
+            border-radius: 35px 0 0 35px; /* More rounded */
+            width: 75%; /* Wider input */
+            font-size: 1.2rem;
+            background: rgba(40, 40, 40, 0.9); /* Slightly lighter input background */
+            color: #ff9999;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .search-box input::placeholder {
+            color: #ff5555;
+            opacity: 0.7;
+        }
+
+        .search-box input:focus {
+            border-color: #ff5555;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+        
+        .search-box button {
+            border: none;
+            outline: none;
+            padding: 16px 30px; /* More padding */
+            border-radius: 0 35px 35px 0; /* More rounded */
+            background: #ff0000;
+            color: #000;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .search-box button:hover {
+            background: #ff5555;
+            transform: translateY(-2px); /* Slight lift on hover */
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
+        }
+        
+        /* Current Weather Info Styles */
+        .weather-info {
+            margin-bottom: 30px;
+            animation: slideInUp 0.8s ease-out; /* Animation for weather info */
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .temperature {
+            font-size: 5.5rem; /* Even larger temperature */
+            font-weight: 800;
+            margin: 25px 0;
+            color: #ff0000;
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
+        }
+        
+        .city-name {
+            font-size: 2.8rem; /* Larger city name */
+            margin-bottom: 12px;
+            color: #ff5555;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .weather-icon {
+            font-size: 6.5rem; /* Larger icon */
+            margin: 20px 0;
+            color: #ff0000;
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
+            animation: iconPulse 2s infinite ease-in-out; /* Pulsing icon animation */
+        }
+
+        @keyframes iconPulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.9; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .description {
+            font-size: 2.1rem; /* Larger description */
+            margin-bottom: 30px;
+            text-transform: capitalize;
+            color: #ff7777;
+            font-weight: 500;
+        }
+        
+        .details {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 15px; /* More gap */
+        }
+        
+        .detail-box {
+            background: rgba(255, 0, 0, 0.15); /* Slightly darker background */
+            border-radius: 15px; /* More rounded */
+            padding: 20px; /* More padding */
+            flex: 1;
+            min-width: 140px; /* Wider min-width */
+            border: 1px solid #ff0000;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .detail-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(255, 0, 0, 0.3);
+        }
+        
+        .detail-box i {
+            font-size: 2.5rem; /* Larger icon */
+            margin-bottom: 12px;
+            color: #ff0000;
+        }
+        
+        .detail-box p {
+            margin: 6px 0;
+        }
+        
+        .detail-box p:first-of-type {
+            color: #ff5555;
+            font-weight: bold;
+            font-size: 1.1rem; /* Slightly larger text */
+        }
+        
+        .detail-box p:last-of-type {
+            color: #ff9999;
+            font-size: 1.3rem; /* Larger value text */
+            font-weight: 500;
+        }
+        
+        /* Forecast Section Styles */
+        .forecast-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #ff0000;
+            animation: slideInUp 0.8s ease-out 0.2s; /* Delayed animation */
+            display: none; /* Hidden by default, shown by JS */
+        }
+
+        .forecast-section h2 {
+            font-size: 2.2rem; /* Larger heading */
+            color: #ff0000;
+            margin-bottom: 20px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .rain-forecast {
+            background: rgba(255, 0, 0, 0.2); /* Darker background */
+            padding: 20px; /* More padding */
+            border-radius: 15px;
+            border: 1px solid #ff0000;
+            margin-bottom: 25px;
+            color: #ff9999;
+            font-size: 1.2rem; /* Larger text */
+            font-weight: 500;
+        }
+        
+        /* Daily Forecast Cards */
+        .daily-forecast-container { 
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); /* Slightly wider cards */
+            gap: 15px; /* More gap */
+            margin-top: 20px;
+        }
+
+        .day-forecast-card {
+            background: rgba(255, 0, 0, 0.15);
+            border-radius: 15px;
+            padding: 15px; /* More padding */
+            border: 1px solid #ff0000;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer; /* Indicate interactivity */
+        }
+
+        .day-forecast-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(255, 0, 0, 0.3);
+        }
+
+        .day-forecast-card p {
+            margin: 5px 0;
+            font-size: 1rem; /* Slightly larger text */
+        }
+
+        .day-forecast-card .icon {
+            font-size: 2.5rem; /* Larger icon */
+            color: #ff0000;
+            margin-bottom: 8px;
+        }
+        .day-forecast-card .temp {
+            font-weight: bold;
+            color: #ff5555;
+            font-size: 1.2rem; /* Larger temperature text */
+        }
+
+        .day-forecast-card .date {
+            font-size: 0.9rem;
+            color: #ff7777;
+            margin-bottom: 5px;
+        }
+        
+        /* Error Message Styles */
+        .error {
+            background: rgba(255, 0, 0, 0.3); /* Darker error background */
+            padding: 20px; /* More padding */
+            border-radius: 15px;
+            margin-top: 30px;
+            color: #ff9999;
+            border: 1px solid #ff0000;
+            display: none;
+            font-size: 1.1rem;
+            animation: shake 0.5s; /* Shake animation for error */
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        
+        /* Footer Styles */
+        .footer {
+            margin-top: 30px;
+            font-size: 1rem; /* Slightly larger footer text */
+            color: #ff5555;
+            padding-top: 20px;
+            border-top: 1px solid #ff0000;
+        }
+        
+        .last-update {
+            color: #ff7777;
+            margin-top: 10px;
+            font-size: 1rem; /* Slightly larger */
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px 30px;
+            }
+            .header h1 {
+                font-size: 2.2rem;
+            }
+            .search-box input, .search-box button {
+                padding: 12px 18px;
+                font-size: 1rem;
+            }
+            .temperature {
+                font-size: 4.5rem;
+            }
+            .city-name {
+                font-size: 2rem;
+            }
+            .weather-icon {
+                font-size: 5.5rem;
+            }
+            .description {
+                font-size: 1.6rem;
+            }
+            .details {
+                flex-direction: column; /* Stack details vertically on smaller screens */
+                gap: 10px;
+            }
+            .detail-box {
+                min-width: unset;
+                width: 100%;
+            }
+            .forecast-section h2 {
+                font-size: 1.8rem;
+            }
+            .daily-forecast-container {
+                grid-template-columns: 1fr; /* Single column for daily forecast */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+                border-radius: 15px;
+            }
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            .location {
+                font-size: 1.1rem;
+            }
+            .search-box {
+                flex-direction: column; /* Stack search input and button */
+                gap: 10px;
+            }
+            .search-box input, .search-box button {
+                border-radius: 30px; /* Full rounded corners */
+                width: 100%;
+                text-align: center;
+            }
+            .temperature {
+                font-size: 3.5rem;
+            }
+            .city-name {
+                font-size: 1.6rem;
+            }
+            .weather-icon {
+                font-size: 4.5rem;
+            }
+            .description {
+                font-size: 1.4rem;
+            }
+            .detail-box p:first-of-type {
+                font-size: 1rem;
+            }
+            .detail-box p:last-of-type {
+                font-size: 1.1rem;
+            }
+            .footer {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-cloud-moon"></i> আমার জেলার আবহাওয়া</h1>
+            <div class="location">
+                <i class="fas fa-location-dot"></i>
+                <p>নড়াইল, খুলনা বিভাগ</p>
+            </div>
+        </div>
+        
+        <div class="search-box">
+            <input type="text" id="cityInput" placeholder="শহরের নাম লিখুন (ইংরেজিতে)">
+            <button onclick="getWeather()"><i class="fas fa-search"></i> খুঁজুন</button>
+        </div>
+        
+        <div class="weather-info" id="weatherInfo">
+            <div class="weather-icon">
+                <i class="fas fa-sun"></i>
+            </div>
+            <div class="temperature" id="temp">0°C</div>
+            <div class="city-name" id="cityName">নড়াইল</div>
+            <div class="description" id="description">লোড হচ্ছে...</div>
+            
+            <div class="details">
+                <div class="detail-box">
+                    <i class="fas fa-tint"></i>
+                    <p>আর্দ্রতা</p>
+                    <p id="humidity">0%</p>
+                </div>
+                <div class="detail-box">
+                    <i class="fas fa-wind"></i>
+                    <p>বাতাস</p>
+                    <p id="wind">0 km/h</p>
+                </div>
+                <div class="detail-box">
+                    <i class="fas fa-compress-alt"></i>
+                    <p>চাপ</p>
+                    <p id="pressure">0 hPa</p>
+                </div>
+            </div>
+            
+            <div class="last-update" id="updateTime">
+                সর্বশেষ আপডেট: লোড হচ্ছে...
+            </div>
+        </div>
+
+        <div class="forecast-section" id="forecastSection">
+            <h2>বৃষ্টির পূর্বাভাস</h2>
+            <div class="rain-forecast" id="rainForecast">
+                বৃষ্টির পূর্বাভাস লোড হচ্ছে...
+            </div>
+
+            <h2>আগামী ৫ দিনের আবহাওয়া</h2>
+            <div class="daily-forecast-container" id="dailyForecastContainer">
+                </div>
+        </div>
+        
+        <div class="error" id="errorMsg">
+            শহরটি পাওয়া যায়নি। পুনরায় চেষ্টা করুন!
+        </div>
+        
+        <div class="footer">
+            <p>আমি পরশ, এই ওয়েবসাইটটি তাদের জন্য তৈরি করেছি, যারা জটিল তথ্য ছাড়াই সহজে জানতে চান—আজ বৃষ্টি হবে কি না।</p>
+        </div>
+    </div>
+
+    <script>
+        // API Key (For production, consider moving this to a server-side environment)
+        const apiKey = "04e5d5c88a22f1daf7761be29eea9409";
+        
+        // DOM elements
+        const cityInput = document.getElementById('cityInput');
+        const tempElement = document.getElementById('temp');
+        const cityNameElement = document.getElementById('cityName');
+        const descriptionElement = document.getElementById('description');
+        const humidityElement = document.getElementById('humidity');
+        const windElement = document.getElementById('wind');
+        const pressureElement = document.getElementById('pressure');
+        const weatherIcon = document.querySelector('.weather-icon i');
+        const errorMsg = document.getElementById('errorMsg');
+        const weatherInfo = document.getElementById('weatherInfo');
+        const updateTimeElement = document.getElementById('updateTime');
+        const rainForecastElement = document.getElementById('rainForecast');
+        const dailyForecastContainer = document.getElementById('dailyForecastContainer');
+        const forecastSection = document.getElementById('forecastSection');
+
+        // Enter key press event
+        cityInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                getWeather();
+            }
+        });
+        
+        // Default: Narail weather on load
+        window.onload = function() {
+            getWeatherByCity("Narail");
+        };
+        
+        function getWeather() {
+            const city = cityInput.value.trim();
+            if (city) {
+                getWeatherByCity(city);
+            }
+        }
+        
+        async function getWeatherByCity(city) {
+            const currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=bn`;
+            const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric&lang=bn`; // 5-day / 3-hour forecast
+
+            // Show loading state for current weather
+            descriptionElement.textContent = "লোড হচ্ছে...";
+            tempElement.textContent = "0°C"; // Reset temp
+            humidityElement.textContent = "0%"; // Reset humidity
+            windElement.textContent = "0 km/h"; // Reset wind
+            pressureElement.textContent = "0 hPa"; // Reset pressure
+            cityNameElement.textContent = city; // Show the city being searched
+            rainForecastElement.textContent = "বৃষ্টির পূর্বাভাস লোড হচ্ছে..."; // Loading for rain forecast
+            dailyForecastContainer.innerHTML = ''; // Clear previous daily forecast
+
+            try {
+                // Fetch current weather
+                const currentResponse = await fetch(currentWeatherUrl);
+                if (!currentResponse.ok) {
+                    if (currentResponse.status === 404) {
+                        throw new Error('শহরটি পাওয়া যায়নি। পুনরায় চেষ্টা করুন!');
+                    } else if (currentResponse.status === 401) {
+                        throw new Error('API কী অবৈধ বা অনুপস্থিত।');
+                    } else {
+                        throw new Error('আবহাওয়ার তথ্য আনতে সমস্যা হয়েছে।');
+                    }
+                }
+                const currentData = await currentResponse.json();
+                displayWeather(currentData);
+                
+                // Fetch 5-day / 3-hour forecast for rain prediction and daily forecast
+                const forecastResponse = await fetch(forecastUrl);
+                if (!forecastResponse.ok) {
+                    throw new Error('পূর্বাভাস ডেটা আনতে সমস্যা হয়েছে।');
+                }
+                const forecastData = await forecastResponse.json();
+                displayRainForecast(forecastData);
+                displayDailyForecast(forecastData); // Display 5-day forecast
+
+                errorMsg.style.display = 'none';
+                weatherInfo.style.display = 'block';
+                forecastSection.style.display = 'block'; // Ensure forecast section is visible
+                
+                // Update time
+                const now = new Date();
+                updateTimeElement.textContent = `সর্বশেষ আপডেট: ${now.toLocaleDateString('bn-BD')} ${now.toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' })}`;
+
+            } catch (error) {
+                showError(error.message);
+                weatherInfo.style.display = 'none';
+                forecastSection.style.display = 'none'; // Hide forecast section on error
+            }
+        }
+        
+        function displayWeather(data) {
+            tempElement.textContent = `${Math.round(data.main.temp)}°C`;
+            cityNameElement.textContent = data.name;
+            descriptionElement.textContent = data.weather[0].description;
+            humidityElement.textContent = `${data.main.humidity}%`;
+            windElement.textContent = `${data.wind.speed} km/h`;
+            pressureElement.textContent = `${data.main.pressure} hPa`;
+            updateWeatherIcon(data.weather[0].icon);
+        }
+        
+        function updateWeatherIcon(iconCode) {
+            let iconClass = '';
+            switch(iconCode) {
+                case '01d': iconClass = 'fas fa-sun'; break; // clear sky day
+                case '01n': iconClass = 'fas fa-moon'; break; // clear sky night
+                case '02d': iconClass = 'fas fa-cloud-sun'; break; // few clouds day
+                case '02n': iconClass = 'fas fa-cloud-moon'; break; // few clouds night
+                case '03d':
+                case '03n':
+                case '04d':
+                case '04n': iconClass = 'fas fa-cloud'; break; // scattered to broken clouds
+                case '09d':
+                case '09n': iconClass = 'fas fa-cloud-showers-heavy'; break; // shower rain
+                case '10d':
+                case '10n': iconClass = 'fas fa-cloud-rain'; break; // rain
+                case '11d':
+                case '11n': iconClass = 'fas fa-bolt'; break; // thunderstorm
+                case '13d':
+                case '13n': iconClass = 'fas fa-snowflake'; break; // snow
+                case '50d':
+                case '50n': iconClass = 'fas fa-smog'; break; // mist/fog
+                default: iconClass = 'fas fa-cloud'; // Default to a cloud icon
+            }
+            weatherIcon.className = iconClass;
+        }
+
+        function displayRainForecast(data) {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); 
+
+            let rainSoon = false;
+            let rainDayCount = -1;
+
+            // Loop through the forecast list (3-hour intervals)
+            // Look for rain within the next 5 days
+            for (let i = 0; i < data.list.length; i++) {
+                const forecastItem = data.list[i];
+                const forecastDate = new Date(forecastItem.dt * 1000); 
+                forecastDate.setHours(0, 0, 0, 0); 
+
+                // Check for rain in weather conditions (ID >= 500 and < 600) or thunderstorms (ID >= 200 and < 300)
+                const isRainingOrThunderstorm = forecastItem.weather.some(w => 
+                    (w.id >= 500 && w.id < 600) || (w.id >= 200 && w.id < 300)
+                );
+
+                if (isRainingOrThunderstorm) {
+                    const diffTime = Math.abs(forecastDate.getTime() - today.getTime());
+                    rainDayCount = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // Calculate days difference
+                    rainSoon = true;
+                    break; // Found the first rain/thunderstorm event
+                }
+            }
+
+            if (rainSoon) {
+                if (rainDayCount === 0) {
+                    rainForecastElement.textContent = "আজকের মধ্যেই বৃষ্টি বা বজ্রপাত হতে পারে।";
+                } else if (rainDayCount === 1) {
+                    rainForecastElement.textContent = "আগামীকাল বৃষ্টি বা বজ্রপাত হতে পারে।";
+                } else {
+                    rainForecastElement.textContent = `${rainDayCount} দিনের মধ্যে বৃষ্টি বা বজ্রপাত হতে পারে।`;
+                }
+            } else {
+                rainForecastElement.textContent = "আগামী ৫ দিনে বৃষ্টির সম্ভাবনা নেই।";
+            }
+        }
+        
+        function displayDailyForecast(data) {
+            dailyForecastContainer.innerHTML = ''; // Clear existing cards
+            const dailyData = {}; 
+
+            // Aggregate data for each day
+            data.list.forEach(item => {
+                const date = new Date(item.dt * 1000);
+                const fullDate = date.toLocaleDateString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' }); // YYYY-MM-DD for unique key
+
+                if (!dailyData[fullDate]) {
+                    dailyData[fullDate] = {
+                        day: date.toLocaleDateString('bn-BD', { weekday: 'short' }),
+                        date: date.toLocaleDateString('bn-BD', { day: 'numeric', month: 'short' }),
+                        minTemp: item.main.temp_min,
+                        maxTemp: item.main.temp_max,
+                        weatherIcons: [item.weather[0].icon], // Store all icons for the day
+                        weatherDescriptions: [item.weather[0].description] // Store all descriptions
+                    };
+                } else {
+                    dailyData[fullDate].minTemp = Math.min(dailyData[fullDate].minTemp, item.main.temp_min);
+                    dailyData[fullDate].maxTemp = Math.max(dailyData[fullDate].maxTemp, item.main.temp_max);
+                    dailyData[fullDate].weatherIcons.push(item.weather[0].icon);
+                    dailyData[fullDate].weatherDescriptions.push(item.weather[0].description);
+                }
+            });
+
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            let dayCount = 0;
+            // Sort keys to ensure chronological order
+            const sortedDates = Object.keys(dailyData).sort();
+
+            for (const dateKey of sortedDates) {
+                if (dayCount >= 5) break; // Display only 5 days
+
+                const dayInfo = dailyData[dateKey];
+                const forecastDate = new Date(dateKey);
+                forecastDate.setHours(0, 0, 0, 0);
+
+                // Skip past days if any, though forecast usually starts from current day
+                if (forecastDate.getTime() < today.getTime()) {
+                    continue;
+                }
+
+                // Determine the main icon and description for the day
+                const mainWeather = getMainWeatherForDay(dayInfo.weatherIcons, dayInfo.weatherDescriptions);
+                const iconClass = getWeatherIconClass(mainWeather.icon);
+                const descriptionText = mainWeather.description;
+
+                const dayNameDisplay = dayCount === 0 ? "আজ" : dayInfo.day; 
+                
+                const card = document.createElement('div');
+                card.className = 'day-forecast-card';
+                card.innerHTML = `
+                    <p class="date">${dayInfo.date}</p>
+                    <p>${dayNameDisplay}</p>
+                    <div class="icon"><i class="${iconClass}"></i></div>
+                    <p class="temp">${Math.round(dayInfo.minTemp)}°C / ${Math.round(dayInfo.maxTemp)}°C</p>
+                    <p style="font-size:0.8rem; color:#ff7777; text-transform: capitalize;">${descriptionText}</p>
+                `;
+                dailyForecastContainer.appendChild(card);
+                dayCount++;
+            }
+        }
+
+        // Helper function to determine the most representative weather for the day
+        function getMainWeatherForDay(icons, descriptions) {
+            const weatherPriority = {
+                '11d': 0, '11n': 0, // Thunderstorm highest priority
+                '09d': 1, '09n': 1, '10d': 1, '10n': 1, // Rain
+                '13d': 2, '13n': 2, // Snow
+                '50d': 3, '50n': 3, // Mist
+                '04d': 4, '04n': 4, // Broken clouds
+                '03d': 5, '03n': 5, // Scattered clouds
+                '02d': 6, '02n': 6, // Few clouds
+                '01d': 7, '01n': 7  // Clear sky lowest priority
+            };
+
+            let bestIcon = icons[0];
+            let bestDescription = descriptions[0];
+            let lowestPriority = weatherPriority[bestIcon] !== undefined ? weatherPriority[bestIcon] : 99;
+
+            // Iterate through all weather conditions for the day to find the most significant one
+            for (let i = 0; i < icons.length; i++) {
+                const currentPriority = weatherPriority[icons[i]] !== undefined ? weatherPriority[icons[i]] : 99;
+                if (currentPriority < lowestPriority) {
+                    lowestPriority = currentPriority;
+                    bestIcon = icons[i];
+                    bestDescription = descriptions[i];
+                }
+            }
+            return { icon: bestIcon, description: bestDescription };
+        }
+        
+        // Helper function to get Font Awesome class from OpenWeatherMap icon code
+        function getWeatherIconClass(iconCode) {
+            switch(iconCode) {
+                case '01d': return 'fas fa-sun';
+                case '01n': return 'fas fa-moon';
+                case '02d': return 'fas fa-cloud-sun';
+                case '02n': return 'fas fa-cloud-moon';
+                case '03d':
+                case '03n':
+                case '04d':
+                case '04n': return 'fas fa-cloud';
+                case '09d':
+                case '09n': return 'fas fa-cloud-showers-heavy';
+                case '10d':
+                case '10n': return 'fas fa-cloud-rain';
+                case '11d':
+                case '11n': return 'fas fa-bolt';
+                case '13d':
+                case '13n': return 'fas fa-snowflake';
+                case '50d':
+                case '50n': return 'fas fa-smog';
+                default: return 'fas fa-cloud';
+            }
+        }
+        
+        function showError(message) {
+            errorMsg.textContent = message;
+            errorMsg.style.display = 'block';
+            weatherInfo.style.display = 'none';
+            forecastSection.style.display = 'none'; // Hide forecast section on error
+        }
+    </script>
+</body>
+</html>
