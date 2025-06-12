@@ -267,4 +267,16 @@ span{
         margin-top: 4rem;
     }
 }
+.menu-toggle {
+  display: none;
+  font-size: 3rem;
+  color: #b74b4b;
+  cursor: pointer;
+}
+
+@media (max-width: 995px) {
+  .menu-toggle {
+    display: block;
+  }
+}
 
