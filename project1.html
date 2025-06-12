@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>QR Code Generator by Parash</title>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+    h1 {
+      color: #ff0000;
+      margin-bottom: 30px;
+    }
+    #generateBtn {
+      background-color: #ff0000;
+      color: #fff;
+      padding: 15px 30px;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+      border-radius: 10px;
+    }
+    #inputSection, #resultSection {
+      display: none;
+      margin-top: 30px;
+    }
+    input[type="text"] {
+      padding: 12px;
+      width: 60%;
+      font-size: 16px;
+      border: 2px solid #ff0000;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    #downloadBtn {
+      display: none;
+      background-color: #fff;
+      color: #ff0000;
+      padding: 10px 25px;
+      font-weight: bold;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    #successMessage {
+      color: #00ff99;
+      font-size: 18px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Link To QR Code</h1>
+  <button id="generateBtn" onclick="showInput()">Click Here</button>
+
+  <div id="inputSection">
+    <p style="color: #fff;">Enter Your Link</p>
+    <input type="text" id="linkInput" placeholder="https://example.com">
+    <br>
+    <button id="generateBtn" onclick="generateQR()">Generate</button>
+  </div>
+
+  <div id="resultSection">
+    <canvas id="qrCanvas"></canvas>
+    <br>
+    <a id="downloadBtn" download="my_qrcode.png">Download QR Code</a>
+    <div id="successMessage">✅ Successful generate QR Code by Parash</div>
+  </div>
+
+  <script>
+    function showInput() {
+      document.getElementById("inputSection").style.display = "block";
+    }
+
+    function generateQR() {
+      const link = document.getElementById("linkInput").value;
+      const canvas = document.getElementById("qrCanvas");
+      const downloadBtn = document.getElementById("downloadBtn");
+      const resultSection = document.getElementById("resultSection");
+
+      if (!link) {
+        alert("⚠️ Please enter a link!");
+        return;
+      }
+
+      QRCode.toCanvas(canvas, link, { width: 200, margin: 2 }, function (error) {
+        if (error) console.error(error);
+        else {
+          resultSection.style.display = "block";
+
+          // ডাউনলোড লিংকে ক্যনভাস ইমেজ বসানো
+          const imageData = canvas.toDataURL("image/png");
+          downloadBtn.href = imageData;
+          downloadBtn.style.display = "inline-block";
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>
