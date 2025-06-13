@@ -12,34 +12,35 @@
 
 html {
   font-size: 62.5%;
+  scroll-behavior: smooth;
 }
 
 body {
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   overflow-x: hidden;
-  background-color: black;
-  color: white;
+  background-color: #000;
+  color: #fff;
 }
 
+/* Header Styling */
 header {
-  margin-top: 20px;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  padding: 1rem 9%;
-  background-color: transparent;
-  filter: drop-shadow(10px);
+  padding: 1.5rem 9%;
+  background-color: rgba(0, 0, 0, 0.8);
+  box-shadow: 0 2px 15px rgba(255, 0, 0, 0.2);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  z-index: 100;
+  z-index: 1000;
 }
 
 .logo {
   font-size: 3rem;
-  color: #b74b4b;
+  color: #ff1c1c;
   font-weight: 800;
   cursor: pointer;
   transition: 0.5s ease;
@@ -47,6 +48,7 @@ header {
 
 .logo:hover {
   transform: scale(1.1);
+  text-shadow: 0 0 15px #ff1c1c;
 }
 
 nav a {
@@ -60,74 +62,80 @@ nav a {
 
 nav a:hover,
 nav a.active {
-  color: #b74b4b;
-  border-bottom: 3px solid #b74b4b;
+  color: #ff1c1c;
+  border-bottom: 3px solid #ff1c1c;
 }
 
+/* Mobile Nav */
 @media(max-width: 995px) {
   nav {
     position: absolute;
     display: none;
-    top: 70px;
+    top: 75px;
     right: 20px;
-    width: 75%;
-    background-color: #161616;
-    border: 2px solid #b74b4b;
+    width: 80%;
+    background-color: #111;
+    border: 2px solid #ff1c1c;
     border-radius: 12px;
     padding: 2rem;
     z-index: 999;
+    animation: fadeIn 0.4s ease;
   }
 
   nav.active {
     display: block;
-    animation: slideIn 0.5s ease forwards;
   }
 
   nav a {
     display: block;
-    font-size: 2rem;
+    font-size: 2.2rem;
     margin: 1.5rem 0;
     padding: 1rem 2rem;
-    background: linear-gradient(135deg, #b74b4b, #000000);
+    background: linear-gradient(135deg, #ff1c1c, #000000);
     color: white;
     text-align: center;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    box-shadow: 0 0 15px #ff1c1c;
     transition: all 0.3s ease;
   }
 
   nav a:hover,
   nav a.active {
-    background: linear-gradient(135deg, #000000, #b74b4b);
-    color: #fff;
+    background: linear-gradient(135deg, #000000, #ff1c1c);
     transform: scale(1.05);
-    box-shadow: 0 8px 25px rgba(183, 75, 75, 0.6);
+    color: #fff;
+    box-shadow: 0 0 25px #ff1c1c;
   }
 }
 
-@keyframes slideIn {
+@keyframes fadeIn {
   from {
-    transform: translateX(100%);
     opacity: 0;
+    transform: translateY(-10%);
   }
-
   to {
-    transform: translateX(0);
     opacity: 1;
+    transform: translateY(0);
   }
 }
 
+/* Section */
 section {
+  padding: 10rem 9% 5rem;
   min-height: 100vh;
-  padding: 5rem 9% 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+/* Home Section */
 .home {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  gap: 8rem;
-  background-color: black;
+  gap: 6rem;
+  flex-wrap: wrap;
+  padding-top: 5rem;
 }
 
 .home .home-content h1 {
@@ -137,7 +145,7 @@ section {
 }
 
 span {
-  color: #b74b4b;
+  color: #ff1c1c;
 }
 
 .home-content h3 {
@@ -148,26 +156,24 @@ span {
 
 .home-content p {
   font-size: 1.6rem;
-}
-
-.home-img {
-  border-radius: 50%;
+  max-width: 500px;
 }
 
 .home-img img {
-  position: relative;
-  width: 32vw;
+  width: 300px;
+  height: 300px;
   border-radius: 50%;
-  box-shadow: 0 0 25px solid #b74b4b;
-  cursor: pointer;
-  transition: 0.2s linear;
+  object-fit: cover;
+  border: 5px solid #ff1c1c;
+  box-shadow: 0 0 25px #ff1c1c;
+  transition: transform 0.3s ease;
 }
 
 .home-img img:hover {
-  font-size: 1.8rem;
-  font-weight: 500;
+  transform: scale(1.05);
 }
 
+/* Social Icons */
 .social-icons a {
   display: inline-flex;
   justify-content: center;
@@ -175,46 +181,49 @@ span {
   width: 4rem;
   height: 4rem;
   background-color: transparent;
-  border: 0.2rem solid #b74b4b;
+  border: 0.2rem solid #ff1c1c;
   font-size: 2rem;
   border-radius: 50%;
   margin: 3rem 1.5rem 3rem 0;
   transition: 0.3s ease;
-  color: #b74b4b;
+  color: #ff1c1c;
 }
 
 .social-icons a:hover {
   color: black;
   transform: scale(1.3) translateY(-5px);
-  background-color: #b74b4b;
-  box-shadow: 0 0 25px #b74b4b;
+  background-color: #ff1c1c;
+  box-shadow: 0 0 25px #ff1c1c;
 }
 
+/* Button Style */
 .btn {
   display: inline-block;
-  padding: 1rem 2.8rem;
-  background-color: black;
+  padding: 1rem 3rem;
+  background-color: #000;
   border-radius: 4rem;
   font-size: 1.6rem;
-  color: #b74b4b;
+  color: #ff1c1c;
   letter-spacing: 0.3rem;
   font-weight: 600;
-  border: 2px solid #b74b4b;
+  border: 2px solid #ff1c1c;
   transition: 0.3s ease;
   cursor: pointer;
 }
 
 .btn:hover {
-  transform: scale3d(1.03);
-  background-color: #b74b4b;
+  transform: scale(1.05);
+  background-color: #ff1c1c;
   color: black;
-  box-shadow: 0 0 25px #b74b4b;
+  box-shadow: 0 0 20px #ff1c1c;
 }
 
+/* Typing Effect */
 .typing-text {
-  font-size: 34px;
+  font-size: 3rem;
   font-weight: 600;
   min-width: 280px;
+  margin-top: 1rem;
 }
 
 .typing-text span {
@@ -222,8 +231,8 @@ span {
 }
 
 .typing-text span::before {
-  content: "software Developer";
-  color: #b74b4b;
+  content: "Web Developer";
+  color: #ff1c1c;
   animation: words 20s infinite;
 }
 
@@ -240,7 +249,7 @@ span {
 
 @keyframes cursor {
   to {
-    border-left: 3px solid #b74b4b;
+    border-left: 3px solid #ff1c1c;
   }
 }
 
@@ -250,11 +259,11 @@ span {
   }
 
   21%, 40% {
-    content: "Developer";
+    content: "Frontend Coder";
   }
 
   41%, 60% {
-    content: "Web Designer";
+    content: "UI Designer";
   }
 
   61%, 80% {
@@ -266,22 +275,32 @@ span {
   }
 }
 
+/* Responsive for Home */
 @media (max-width: 1000px) {
   .home {
-    gap: 4rem;
-  }
-}
-
-@media(max-width: 995px) {
-  .home {
     flex-direction: column;
-    margin: 5rem 4rem;
+    gap: 4rem;
+    text-align: center;
+  }
+
+  .home-img img {
+    width: 240px;
+    height: 240px;
+  }
+
+  .home .home-content h1 {
+    font-size: 4rem;
   }
 
   .home .home-content h3 {
-    font-size: 2.5rem;
+    font-size: 2.8rem;
   }
+}
 
-  .home-content h1 {
-    font-size: 5rem;
-  }
+/* Remove extra space from bottom */
+body::after {
+  content: "";
+  display: block;
+  height: 0;
+  clear: both;
+}
